@@ -4,8 +4,11 @@ TMPFILE := $(shell mktemp)
 
 CFLAGS=-O2 -Wall -pedantic -Werror -Wextra -lm
 
-all: output.ppm
+all: mandelbrot.ppm
 
-output.ppm: main
-	./main > ${TMPFILE}
+%.ppm: %
+	./$^ > ${TMPFILE}
 	mv ${TMPFILE} $@
+
+mandelbrot: mandelbrot.c color.h ppm.h
+	${CC} ${CFLAGS} -o $@ $<

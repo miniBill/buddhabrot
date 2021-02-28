@@ -1,6 +1,10 @@
-#include <math.h>
+#pragma once
+
 #include <stdint.h>
-#include <stdio.h>
+
+struct color_t {
+    uint8_t r, g, b;
+};
 
 struct vec3_t {
     double x,y,z;
@@ -15,10 +19,6 @@ struct vec3_t by(double l, struct vec3_t r) {
     struct vec3_t result = { l * r.x, l * r.y, l * r.z };
     return result;
 }
-
-struct color_t {
-    uint8_t r, g, b;
-};
 
 uint8_t toInt(double val) {
     if(val < 0) return 0;
@@ -39,58 +39,4 @@ struct color_t viridis(double t) {
     struct vec3_t result_float = plus(c0, by(t, (plus(c1, by(t, (plus(c2, by(t, (plus(c3, by(t, (plus(c4, by(t, (plus(c5, by(t, c6)))))))))))))))));
     struct color_t result = { toInt(result_float.x), toInt(result_float.y), toInt(result_float.z) };
     return result;
-}
-
-struct color_t go(double x, double y) {
-    struct color_t result = { 0, 0, 0 };
-
-    double r = x;
-    double i = y;
-    double r_squared = r * r;
-    double i_squared = i * i;
-
-    for(int c = 0; c < 200; c++)
-    {
-        if(r_squared + i_squared > 4)
-        {
-            return viridis(log(1 + c / 200.0));
-        }
-
-        i = 2 * r * i + y;
-        r = r_squared - i_squared + x;
-
-        r_squared = r * r;
-        i_squared = i * i;
-    }
-    return result;
-}
-
-int main () {
-    int width = 4000;
-    int height = 2000;
-
-    double minx = -2.5;
-    double maxx = 1.5;
-
-    double fwidth = maxx - minx;
-    double fheight = fwidth * height / width;
-
-    double centery = 0;
-
-    double miny = centery - fheight / 2;
-
-    printf("P6\n");
-    printf("%d %d\n255\n", width, height);
-
-    for(int j = 0; j < height; j++) {
-        double y = miny + j * fheight / height;
-        for(int i = 0; i < width; i++) {
-            double x = minx + i * fwidth / width;
-
-            struct color_t color = go(x, y);
-            printf("%c%c%c", (char)color.r, (char)color.g, (char)color.b);
-        }
-    }
-
-    return 0;
 }
