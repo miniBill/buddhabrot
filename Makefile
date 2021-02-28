@@ -2,13 +2,23 @@
 
 TMPFILE := $(shell mktemp)
 
-CFLAGS=-O2 -Wall -pedantic -Werror -Wextra -lm
+CC=gcc
+CFLAGS=-O2 -Wall -pedantic -Werror -Wextra -lm -march=native
 
-all: mandelbrot.ppm
+all: mandelbrot.png buddha.png anti-buddha.png
 
 %.ppm: %
-	./$^ > ${TMPFILE}
+	time ./$^ > ${TMPFILE}
 	mv ${TMPFILE} $@
 
-mandelbrot: mandelbrot.c color.h ppm.h
+mandelbrot: mandelbrot.c color.h ppm.h global.h vec3.h
 	${CC} ${CFLAGS} -o $@ $<
+
+buddha: buddha.c color.h ppm.h global.h vec3.h
+	${CC} ${CFLAGS} -o $@ $<
+
+anti-buddha: anti-buddha.c color.h ppm.h global.h vec3.h
+	${CC} ${CFLAGS} -o $@ $<
+
+%.png: %.ppm
+	convert $^ $@
