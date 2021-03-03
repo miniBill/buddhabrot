@@ -29,7 +29,14 @@ struct color_t go(double x, double y) {
     return result;
 }
 
-int main () {
+int main (int argc, char * argv[]) {
+    if(argc < 2) {
+        fprintf(stderr, "Usage: %s <output_file.ppm>\n", argc > 0 ? argv[0] : "mandelbrot");
+        return -1;
+    }
+
+    char * filename = argv[1];
+
     global_init(1920, -2.2, 1.5, -1.2, 1.2);
 
     struct color_t * picture = (struct color_t *)calloc(global_width * global_height, sizeof(struct color_t));
@@ -43,9 +50,7 @@ int main () {
         }
     }
 
-    ppm_save(picture, global_width, global_height);
-
-    free(picture);
+    ppm_save(filename, picture, global_width, global_height);
 
     return 0;
 }

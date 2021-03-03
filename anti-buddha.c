@@ -22,7 +22,7 @@ void go(double x, double y, uint64_t * hits) {
 
         r_squared = r * r;
         i_squared = i * i;
-        
+
         if(r_squared + i_squared > 4)
             return;
     }
@@ -48,7 +48,14 @@ void go(double x, double y, uint64_t * hits) {
     }
 }
 
-int main () {
+int main (int argc, char * argv[]) {
+    if(argc < 2) {
+        fprintf(stderr, "Usage: %s <output_file.ppm>\n", argc > 0 ? argv[0] : "anti-buddha");
+        return -1;
+    }
+
+    char * filename = argv[1];
+
     global_init(1920, -2.0, 1.5, -1.5, 1.5);
 
     struct color_t * picture = (struct color_t *)calloc(global_width * global_height, sizeof(struct color_t));
@@ -77,9 +84,7 @@ int main () {
         }
     }
 
-    ppm_save(picture, global_height, global_width);
-
-    free(picture);
+    ppm_save(filename, picture, global_height, global_width);
 
     return 0;
 }

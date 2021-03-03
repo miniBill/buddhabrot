@@ -1,15 +1,15 @@
 .PHONY: all
 
-TMPFILE := $(shell mktemp)
-
 CC=gcc
-CFLAGS=-O2 -Wall -pedantic -Werror -Wextra -lm -march=native
+CFLAGS=-O2 -Wall -pedantic -Werror -Wextra -lm -lpthread -march=native
 
-all: mandelbrot.png buddha.png anti-buddha.png
+all: mandelbrot.png buddha-sqrt.png buddha-linear.png anti-buddha.png
 
-%.ppm: %
-	time ./$^ > ${TMPFILE}
-	mv ${TMPFILE} $@
+buddha-sqrt.ppm buddha-linear.ppm: buddha
+	$(eval TMPFILE := $(shell mktemp))
+	time ./buddha ${TMPFILE}
+	mv ${TMPFILE}-sqrt buddha-sqrt.ppm
+	mv ${TMPFILE}-linear buddha-linear.ppm
 
 mandelbrot: mandelbrot.c color.h ppm.h global.h vec3.h
 	${CC} ${CFLAGS} -o $@ $<
@@ -20,5 +20,12 @@ buddha: buddha.c color.h ppm.h global.h vec3.h
 anti-buddha: anti-buddha.c color.h ppm.h global.h vec3.h
 	${CC} ${CFLAGS} -o $@ $<
 
+%.ppm: %
+	$(eval TMPFILE := $(shell mktemp))
+	time ./$^ ${TMPFILE}
+	mv ${TMPFILE} $@
+
 %.png: %.ppm
-	convert $^ $@
+	$(eval TMPFILE := $(shell mktemp))
+	convert $^ ${TMPFILE}
+	mv ${TMPFILE} $@
