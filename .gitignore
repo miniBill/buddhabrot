@@ -1,5 +1,2 @@
-mandelbrot
-buddha
-anti-buddha
-*.ppm
-*.png
+out
+obj

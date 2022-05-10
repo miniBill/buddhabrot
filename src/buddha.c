@@ -110,7 +110,7 @@ int main (int argc, char * argv[]) {
 
     char * filename = argv[1];
 
-    global_init(1920 * 8, -2.0, 1.5, -1.5, 1.5);
+    global_init(1920, -2.0, 1.5, -1.5, 1.5);
 
     struct color_t * picture = (struct color_t *)calloc(global_width * global_height, sizeof(struct color_t));
     uint32_t * hits = (uint32_t *)calloc(global_width * global_height, sizeof(uint32_t));

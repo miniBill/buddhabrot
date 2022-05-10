@@ -2,24 +2,26 @@
 
 CC=gcc
 CFLAGS=-O2 -Wall -pedantic -Werror -Wextra -lm -lpthread -march=native
+INCLUDES=src/color.h src/ppm.h src/global.h src/vec3.h
 
-all: mandelbrot.png buddha.png anti-buddha.png
+all: out/mandelbrot.png out/buddha.png out/anti-buddha.png
 
-mandelbrot: mandelbrot.c color.h ppm.h global.h vec3.h
+bin/%: src/%.c ${INCLUDES}
+	mkdir -p bin
 	${CC} ${CFLAGS} -o $@ $<
 
-buddha: buddha.c color.h ppm.h global.h vec3.h
-	${CC} ${CFLAGS} -o $@ $<
-
-anti-buddha: anti-buddha.c color.h ppm.h global.h vec3.h
-	${CC} ${CFLAGS} -o $@ $<
-
-%.ppm: %
+out/%.ppm: bin/%
+	mkdir -p out
 	$(eval TMPFILE := $(shell mktemp))
-	time ./$^ ${TMPFILE}
+	time ./bin/$^ ${TMPFILE}
 	mv ${TMPFILE} $@
 
-%.png: %.ppm
+out/%.png: out/%.ppm
+	mkdir -p out
 	$(eval TMPFILE := $(shell mktemp))
 	convert $^ ${TMPFILE}
 	mv ${TMPFILE} $@
+
+.PHONY: clean
+clean:
+	rm -f bin out/*.ppm
