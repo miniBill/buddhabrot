@@ -13,7 +13,7 @@ bin/%: src/%.c ${INCLUDES}
 out/%.ppm: bin/%
 	mkdir -p out
 	$(eval TMPFILE := $(shell mktemp))
-	time ./bin/$^ ${TMPFILE}
+	time $^ ${TMPFILE}
 	mv ${TMPFILE} $@
 
 out/%.png: out/%.ppm
