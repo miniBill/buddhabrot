@@ -1,33 +1,39 @@
 #pragma once
 
-int global_width;
-int global_height;
+struct global_t
+{
+    int width;
+    int height;
 
-double global_minx;
-double global_maxx;
+    double minx;
+    double maxx;
 
-double global_miny;
-double global_maxy;
+    double miny;
+    double maxy;
 
-double global_centerx;
-double global_centery;
+    double centerx;
+    double centery;
 
-double global_fwidth;
-double global_fheight;
+    double fwidth;
+    double fheight;
+};
 
-void global_init(int width, double minx, double maxx, double miny, double maxy) {
-    global_minx = minx;
-    global_maxx = maxx;
+struct global_t global_init(int width, double minx, double maxx, double miny, double maxy)
+{
+    struct global_t result;
+    result.minx = minx;
+    result.maxx = maxx;
 
-    global_miny = miny;
-    global_maxy = maxy;
+    result.miny = miny;
+    result.maxy = maxy;
 
-    global_centerx = (minx + maxx) / 2;
-    global_centery = (miny + maxy) / 2;
+    result.centerx = (minx + maxx) / 2;
+    result.centery = (miny + maxy) / 2;
 
-    global_fwidth = global_maxx - global_minx;
-    global_fheight = global_maxy - global_miny;
+    result.fwidth = result.maxx - result.minx;
+    result.fheight = result.maxy - result.miny;
 
-    global_width = width;
-    global_height = width * global_fheight / global_fwidth;
+    result.width = width;
+    result.height = width * result.fheight / result.fwidth;
+    return result;
 }

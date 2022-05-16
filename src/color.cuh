@@ -1,15 +1,8 @@
 #pragma once
 
-#include <stdint.h>
+#include "color.h"
 
-#include "vec3.h"
-
-struct color_t
-{
-    uint8_t r, g, b;
-};
-
-uint8_t color_double_to_int(double val)
+__device__ uint8_t color_double_to_int_cuda(double val)
 {
     if (val < 0)
         return 0;
@@ -18,7 +11,7 @@ uint8_t color_double_to_int(double val)
     return (uint8_t)(256 * val);
 }
 
-struct color_t color_viridis(double t)
+__device__ struct color_t color_viridis_cuda(double t)
 {
     // https://www.shadertoy.com/view/WlfXRN
     struct vec3_t c0 = {0.2777273272234177, 0.005407344544966578, 0.3340998053353061};
@@ -29,7 +22,7 @@ struct color_t color_viridis(double t)
     struct vec3_t c5 = {4.776384997670288, -13.74514537774601, -65.35303263337234};
     struct vec3_t c6 = {-5.435455855934631, 4.645852612178535, 26.3124352495832};
 
-    struct vec3_t result_float = vec3_plus_vec3(c0, vec3_by_double(t, (vec3_plus_vec3(c1, vec3_by_double(t, (vec3_plus_vec3(c2, vec3_by_double(t, (vec3_plus_vec3(c3, vec3_by_double(t, (vec3_plus_vec3(c4, vec3_by_double(t, (vec3_plus_vec3(c5, vec3_by_double(t, c6)))))))))))))))));
-    struct color_t result = {color_double_to_int(result_float.x), color_double_to_int(result_float.y), color_double_to_int(result_float.z)};
+    struct vec3_t result_float = vec3_plus_vec3_cuda(c0, vec3_by_double_cuda(t, vec3_plus_vec3_cuda(c1, vec3_by_double_cuda(t, vec3_plus_vec3_cuda(c2, vec3_by_double_cuda(t, vec3_plus_vec3_cuda(c3, vec3_by_double_cuda(t, vec3_plus_vec3_cuda(c4, vec3_by_double_cuda(t, vec3_plus_vec3_cuda(c5, vec3_by_double_cuda(t, c6))))))))))));
+    struct color_t result = {color_double_to_int_cuda(result_float.x), color_double_to_int_cuda(result_float.y), color_double_to_int_cuda(result_float.z)};
     return result;
 }

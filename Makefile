@@ -5,7 +5,7 @@ CXX=g++
 NVCC=nvcc
 CFLAGS=-O2 -Wall -pedantic -Werror -Wextra -lm -lpthread -march=native
 NVCCFLAGS=-O2
-INCLUDES=src/color.h src/ppm.h src/global.h src/vec3.h
+INCLUDES=src/color.h src/color.cuh src/ppm.h src/global.h src/vec3.h src/vec3.cuh
 
 all: out/mandelbrot.png out/buddha.png out/anti-buddha.png out/buddha-cuda.png
 
