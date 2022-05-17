@@ -86,7 +86,7 @@ void *slice(void *void_arg)
     int thread_count = init.thread_count;
     uint32_t *hits = (uint32_t *)calloc(global.width * global.height, sizeof(uint32_t));
 
-    int finer_grid_multiplier = 6;
+    int finer_grid_multiplier = 16;
 
     // int old_percentage = -1;
 
