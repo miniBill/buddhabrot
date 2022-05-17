@@ -75,7 +75,7 @@ __global__ void buddha(
 {
   int index = blockIdx.x * blockDim.x + threadIdx.x;
   int stride = blockDim.x * gridDim.x;
-  int fine_grid = 16;
+  int fine_grid = 4;
 
   double deltax = global.fheight / global.height;
   double deltay = global.fwidth / global.width;

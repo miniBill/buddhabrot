@@ -86,7 +86,7 @@ void *slice(void *void_arg)
 
     int thread_count = get_nprocs();
 
-    int finer_grid_multiplier = 16;
+    int finer_grid_multiplier = 4;
 
     // int old_percentage = -1;
 
