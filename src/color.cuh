@@ -1,6 +1,7 @@
 #pragma once
 
 #include "color.h"
+#include "vec3.cuh"
 
 __device__ uint8_t color_double_to_int_cuda(double val)
 {

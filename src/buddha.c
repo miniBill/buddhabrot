@@ -134,11 +134,11 @@ int main(int argc, char *argv[])
     int thread_count = get_nprocs();
 
     pthread_t threads[thread_count];
-    int skips[thread_count];
+    struct slice_init_t skips[thread_count];
 
     for (int i = 0; i < thread_count; i++)
     {
-        skips[i] = i;
+        skips[i] = (struct slice_init_t){global, i};
         fprintf(stderr, "Starting thread #%d\n", i + 1);
         if (pthread_create(&threads[i], NULL, slice, &skips[i]))
         {
