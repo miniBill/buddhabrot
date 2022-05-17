@@ -75,6 +75,7 @@ struct slice_init_t
 {
     struct global_t global;
     int skip;
+    int thread_count;
 };
 
 void *slice(void *void_arg)
@@ -82,11 +83,10 @@ void *slice(void *void_arg)
     struct slice_init_t init = *(struct slice_init_t *)void_arg;
     int skip = init.skip;
     struct global_t global = init.global;
+    int thread_count = init.thread_count;
     uint32_t *hits = (uint32_t *)calloc(global.width * global.height, sizeof(uint32_t));
 
-    int thread_count = get_nprocs();
-
-    int finer_grid_multiplier = 4;
+    int finer_grid_multiplier = 6;
 
     // int old_percentage = -1;
 
@@ -109,8 +109,8 @@ void *slice(void *void_arg)
         }
     }
 
-    if (skip == thread_count - 1)
-        fprintf(stderr, "100%%\n");
+    // if (skip == thread_count - 1)
+    //     fprintf(stderr, "100%%\n");
 
     return hits;
 }
@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < thread_count; i++)
     {
-        skips[i] = (struct slice_init_t){global, i};
+        skips[i] = (struct slice_init_t){global, i, thread_count};
         fprintf(stderr, "Starting thread #%d\n", i + 1);
         if (pthread_create(&threads[i], NULL, slice, &skips[i]))
         {
