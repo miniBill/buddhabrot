@@ -87,13 +87,12 @@ void *slice(void *void_arg)
     int thread_count = get_nprocs();
 
     int finer_grid_multiplier = 16;
-    int coarser_grid_multiplier = 1;
 
     int old_percentage = -1;
 
-    for (int y_int = skip; y_int < global.height * finer_grid_multiplier / coarser_grid_multiplier / 2; y_int += thread_count)
+    for (int y_int = skip; y_int < global.height * finer_grid_multiplier / 2; y_int += thread_count)
     {
-        int percentage = y_int * 100 * coarser_grid_multiplier / global.height / finer_grid_multiplier;
+        int percentage = y_int * 100 / global.height / finer_grid_multiplier;
         if (skip == thread_count - 1 && percentage != old_percentage)
         {
             fprintf(stderr, "%d%% ", percentage);
@@ -102,10 +101,10 @@ void *slice(void *void_arg)
             fflush(stderr);
             old_percentage = percentage;
         }
-        double y = global.miny + y_int * global.fheight / global.height / finer_grid_multiplier * coarser_grid_multiplier;
-        for (int x_int = 0; x_int < global.width * finer_grid_multiplier / coarser_grid_multiplier; x_int++)
+        double y = global.miny + y_int * global.fheight / global.height / finer_grid_multiplier;
+        for (int x_int = 0; x_int < global.width * finer_grid_multiplier; x_int++)
         {
-            double x = global.minx + x_int * global.fwidth / global.width / finer_grid_multiplier * coarser_grid_multiplier;
+            double x = global.minx + x_int * global.fwidth / global.width / finer_grid_multiplier;
             go(global, x, y, hits);
         }
     }
